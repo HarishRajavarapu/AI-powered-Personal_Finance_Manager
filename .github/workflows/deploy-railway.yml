@@ -1,4 +1,4 @@
-name: Build, push, and deploy to Railway
+name: Build and push backend image (GHCR)
 
 on:
   workflow_dispatch: {}
@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,21 +31,5 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
 
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Login to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          railway login --apiKey $RAILWAY_TOKEN
-
-      - name: Deploy image to Railway
-        env:
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          IMAGE: ghcr.io/${{ github.repository }}:latest
-        run: |
-          # Try 'railway up' first; if it fails, fall back to 'railway deploy'
-          set -e
-          railway up --project $RAILWAY_PROJECT_ID --detach --image $IMAGE || \
-          railway deploy --project $RAILWAY_PROJECT_ID --image $IMAGE --detach
+      - name: Output image
+        run: echo "Image pushed: ghcr.io/${{ github.repository }}:latest"
