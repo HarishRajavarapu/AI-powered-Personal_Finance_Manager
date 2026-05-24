@@ -33,7 +33,7 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository_owner }}/ai-powered-personal-finance-manager:latest
 
       - name: Output image
-        run: echo "Image pushed: ghcr.io/${{ github.repository }}:latest"
+        run: echo "Image pushed: ghcr.io/${{ github.repository_owner }}/ai-powered-personal-finance-manager:latest"
