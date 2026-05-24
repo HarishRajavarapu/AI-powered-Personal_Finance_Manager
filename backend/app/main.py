@@ -16,7 +16,11 @@ settings = get_settings()
 async def lifespan(app: FastAPI):
     """Create and close shared resources for the application lifecycle."""
     if settings.mongodb_configured:
-        await connect_to_mongo()
+        try:
+            await connect_to_mongo()
+        except Exception:
+            # Keep the API booting; database-dependent routes will report unavailable.
+            pass
     yield
     await close_mongo_connection()
 
@@ -34,6 +38,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
+    allow_origin_regex=settings.cors_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -30,6 +30,7 @@ class Settings(BaseSettings):
         "http://localhost:5174,http://127.0.0.1:5174,"
         "http://localhost:5175,http://127.0.0.1:5175"
     )
+    CORS_ORIGIN_REGEX: str = r"^https://.*\.netlify\.app$"
 
     model_config = SettingsConfigDict(
         env_file=BACKEND_DIR / ".env",
@@ -45,6 +46,10 @@ class Settings(BaseSettings):
     @property
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
+
+    @property
+    def cors_origin_regex(self) -> str:
+        return self.CORS_ORIGIN_REGEX.strip()
 
 
 @lru_cache
