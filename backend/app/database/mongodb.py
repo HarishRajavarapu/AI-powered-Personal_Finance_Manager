@@ -17,7 +17,14 @@ async def connect_to_mongo() -> None:
     if not settings.mongodb_configured:
         raise RuntimeError("MONGODB_URI is not configured. Add it to backend/.env.")
 
-    mongodb.client = AsyncIOMotorClient(settings.MONGODB_URI)
+    # Allow a short-term prototype override to skip TLS certificate validation
+    # when connecting to Atlas. This should only be used for debugging/testing
+    # and must be disabled in production.
+    client_kwargs = {}
+    if getattr(settings, "MONGODB_TLS_ALLOW_INVALID_CERTS", False):
+        client_kwargs["tlsAllowInvalidCertificates"] = True
+
+    mongodb.client = AsyncIOMotorClient(settings.MONGODB_URI, **client_kwargs)
     mongodb.database = mongodb.client[settings.MONGODB_DB_NAME]
 
     # Ping during startup so deployment failures are visible immediately.

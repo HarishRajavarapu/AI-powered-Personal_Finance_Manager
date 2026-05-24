@@ -18,6 +18,9 @@ class Settings(BaseSettings):
 
     MONGODB_URI: str = ""
     MONGODB_DB_NAME: str = "finance_manager"
+    # For quick prototype debugging only: allow invalid TLS certs when connecting to MongoDB.
+    # DO NOT enable in production. Prefer rotating credentials and using a proper runtime.
+    MONGODB_TLS_ALLOW_INVALID_CERTS: bool = False
 
     JWT_SECRET_KEY: str = Field(default="replace-with-a-long-random-secret", min_length=16)
     JWT_ALGORITHM: str = "HS256"
