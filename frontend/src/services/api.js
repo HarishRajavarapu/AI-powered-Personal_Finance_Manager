@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const LOCAL_API_BASE_URL = "http://127.0.0.1:8000/api/v1";
-const PRODUCTION_API_BASE_URL = "https://ai-finance-manager-api.onrender.com/api/v1";
+const PRODUCTION_API_BASE_URL = "https://ai-powered-personal-finance-manager.onrender.com/api/v1";
 const CONFIGURED_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_BASE_URL = CONFIGURED_API_BASE_URL || (import.meta.env.DEV ? LOCAL_API_BASE_URL : PRODUCTION_API_BASE_URL);
 
