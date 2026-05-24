@@ -1,0 +1,4 @@
+USERS_COLLECTION = "users"
+TRANSACTIONS_COLLECTION = "transactions"
+BUDGETS_COLLECTION = "budgets"
+
