@@ -78,9 +78,9 @@ copy .env.example .env
 Update `backend/.env`:
 
 ```env
-MONGODB_URI="your-mongodb-atlas-uri"
-JWT_SECRET_KEY="a-long-random-secret"
-GEMINI_API_KEY="optional-gemini-api-key"
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+JWT_SECRET_KEY=a-long-random-secret
+GEMINI_API_KEY=optional-gemini-api-key
 ```
 
 Run:
@@ -132,16 +132,62 @@ http://127.0.0.1:5173
 
 ## Deployment
 
-Frontend deploys with `netlify.toml`.
+Frontend deploys with `netlify.toml` from the `frontend` folder.
 
-Backend deploys with `render.yaml`.
+Backend deploys with `render.yaml` from the `backend` folder. The backend must bind to Render's `PORT`, which is already handled by:
 
-Set these Render environment variables:
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}
+```
 
-- `MONGODB_URI`
-- `JWT_SECRET_KEY`
-- `GEMINI_API_KEY`
-- `CORS_ORIGINS` with your Netlify URL
+### Render backend
+
+Use a free Render Web Service.
+
+- Root directory: `backend`
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}`
+
+Set these Render environment variables. Do not wrap values in quotes in the Render dashboard.
+
+- `ENVIRONMENT=production`
+- `DEBUG=false`
+- `MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority`
+- `MONGODB_DB_NAME=finance_manager`
+- `MONGODB_SERVER_SELECTION_TIMEOUT_MS=10000`
+- `MONGODB_TLS_ALLOW_INVALID_CERTS=false`
+- `JWT_SECRET_KEY=<long-random-secret>`
+- `JWT_ALGORITHM=HS256`
+- `JWT_ACCESS_TOKEN_EXPIRE_MINUTES=1440`
+- `GEMINI_API_KEY=<optional>`
+- `GEMINI_MODEL=gemini-2.0-flash`
+- `CORS_ORIGINS=https://your-netlify-site.netlify.app`
+- `CORS_ORIGIN_REGEX=^https://.*\.netlify\.app$`
+
+In MongoDB Atlas, open Network Access and allow the Render service to connect. For the simplest free setup, use `0.0.0.0/0` while keeping a strong database username and password. If you later move to a host with static outbound IPs, replace it with only those IPs.
+
+Verify Render after deploy:
+
+```bash
+curl https://your-render-service.onrender.com/api/v1/health
+curl https://your-render-service.onrender.com/api/v1/health/database
+```
+
+The database endpoint should return `"configured": true` and `"connected": true`.
+
+### Netlify frontend
+
+Use a free Netlify site.
+
+- Base directory: `frontend`
+- Build command: `npm run build`
+- Publish directory: `frontend/dist` if configuring from the repo root, or `dist` if Netlify reads `netlify.toml`
+
+Set this Netlify environment variable:
+
+- `VITE_API_BASE_URL=https://your-render-service.onrender.com/api/v1`
+
+Redeploy Netlify after setting it, because Vite reads `VITE_*` variables at build time.
 
 ## Verification
 
@@ -153,4 +199,3 @@ cd D:\codex\frontend
 npm run lint
 npm run build
 ```
-

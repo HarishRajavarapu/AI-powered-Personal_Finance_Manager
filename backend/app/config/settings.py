@@ -1,4 +1,5 @@
 from functools import lru_cache
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -18,6 +19,7 @@ class Settings(BaseSettings):
 
     MONGODB_URI: str = ""
     MONGODB_DB_NAME: str = "finance_manager"
+    MONGODB_SERVER_SELECTION_TIMEOUT_MS: int = 10000
     # For quick prototype debugging only: allow invalid TLS certs when connecting to MongoDB.
     # DO NOT enable in production. Prefer rotating credentials and using a proper runtime.
     MONGODB_TLS_ALLOW_INVALID_CERTS: bool = False
@@ -47,12 +49,16 @@ class Settings(BaseSettings):
         return bool(self.MONGODB_URI.strip())
 
     @property
+    def is_production(self) -> bool:
+        return self.ENVIRONMENT.lower() in {"production", "prod"} or os.getenv("RENDER", "").lower() == "true"
+
+    @property
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
     @property
-    def cors_origin_regex(self) -> str:
-        return self.CORS_ORIGIN_REGEX.strip()
+    def cors_origin_regex(self) -> str | None:
+        return self.CORS_ORIGIN_REGEX.strip() or None
 
 
 @lru_cache

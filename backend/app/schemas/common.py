@@ -18,7 +18,9 @@ class HealthResponse(BaseModel):
 class DatabaseHealthResponse(BaseModel):
     status: Literal["ok", "unavailable"]
     database: str
+    configured: bool
     connected: bool
+    message: str | None = None
 
 
 class MongoModel(BaseModel):
@@ -27,4 +29,3 @@ class MongoModel(BaseModel):
         arbitrary_types_allowed=True,
         json_encoders={},
     )
-

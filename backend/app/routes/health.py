@@ -22,10 +22,18 @@ async def health_check() -> HealthResponse:
 @router.get("/database", response_model=DatabaseHealthResponse)
 async def database_health_check() -> DatabaseHealthResponse:
     settings = get_settings()
-    is_connected = await ping_database() if settings.mongodb_configured else False
+    is_configured = settings.mongodb_configured
+    is_connected = await ping_database() if is_configured else False
+    message = None
+    if not is_configured:
+        message = "MONGODB_URI is not configured in this runtime."
+    elif not is_connected:
+        message = "MongoDB is configured but not reachable. Check Render logs and MongoDB Atlas Network Access."
+
     return DatabaseHealthResponse(
         status="ok" if is_connected else "unavailable",
         database=settings.MONGODB_DB_NAME,
+        configured=is_configured,
         connected=is_connected,
+        message=message,
     )
-

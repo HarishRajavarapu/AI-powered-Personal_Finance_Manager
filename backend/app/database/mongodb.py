@@ -7,6 +7,7 @@ from app.config.settings import get_settings
 class MongoDB:
     client: AsyncIOMotorClient | None = None
     database: AsyncIOMotorDatabase | None = None
+    last_error: str | None = None
 
 
 mongodb = MongoDB()
@@ -15,21 +16,32 @@ mongodb = MongoDB()
 async def connect_to_mongo() -> None:
     settings = get_settings()
     if not settings.mongodb_configured:
-        raise RuntimeError("MONGODB_URI is not configured. Add it to backend/.env.")
+        mongodb.last_error = "MONGODB_URI is not configured."
+        raise RuntimeError(
+            "MONGODB_URI is not configured. Add it to backend/.env locally or to your host environment variables."
+        )
 
     # Allow a short-term prototype override to skip TLS certificate validation
     # when connecting to Atlas. This should only be used for debugging/testing
     # and must be disabled in production.
-    client_kwargs = {}
+    client_kwargs = {
+        "serverSelectionTimeoutMS": settings.MONGODB_SERVER_SELECTION_TIMEOUT_MS,
+    }
     if getattr(settings, "MONGODB_TLS_ALLOW_INVALID_CERTS", False):
         client_kwargs["tlsAllowInvalidCertificates"] = True
 
     mongodb.client = AsyncIOMotorClient(settings.MONGODB_URI, **client_kwargs)
     mongodb.database = mongodb.client[settings.MONGODB_DB_NAME]
 
-    # Ping during startup so deployment failures are visible immediately.
-    await mongodb.database.command("ping")
-    await create_indexes()
+    try:
+        # Ping during startup so deployment failures are visible immediately.
+        await mongodb.database.command("ping")
+        await create_indexes()
+        mongodb.last_error = None
+    except Exception as exc:
+        mongodb.last_error = str(exc)
+        await close_mongo_connection()
+        raise
 
 
 async def close_mongo_connection() -> None:
@@ -41,7 +53,10 @@ async def close_mongo_connection() -> None:
 
 def get_database() -> AsyncIOMotorDatabase:
     if mongodb.database is None:
-        raise RuntimeError("Database is not connected.")
+        message = "Database is not connected."
+        if mongodb.last_error:
+            message = f"{message} Last connection error: {mongodb.last_error}"
+        raise RuntimeError(message)
     return mongodb.database
 
 
@@ -50,7 +65,8 @@ async def ping_database() -> bool:
         database = get_database()
         await database.command("ping")
         return True
-    except (RuntimeError, PyMongoError):
+    except (RuntimeError, PyMongoError) as exc:
+        mongodb.last_error = str(exc)
         return False
 
 

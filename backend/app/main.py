@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,17 +11,30 @@ from app.routes.api import api_router
 
 
 settings = get_settings()
+logger = logging.getLogger("uvicorn.error")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Create and close shared resources for the application lifecycle."""
-    if settings.mongodb_configured:
+    if not settings.mongodb_configured:
+        message = (
+            "MONGODB_URI is not configured. Set it in Render environment variables; "
+            "backend/.env is only used for local development."
+        )
+        if settings.is_production:
+            logger.critical(message)
+            raise RuntimeError(message)
+        logger.warning(message)
+    else:
         try:
             await connect_to_mongo()
         except Exception:
-            # Keep the API booting; database-dependent routes will report unavailable.
-            pass
+            # Log the exception so deployment logs show the reason for failure.
+            logger.exception("Failed to connect to MongoDB during startup")
+            if settings.is_production:
+                raise
+            # Keep local development booting; database-dependent routes will report unavailable.
     yield
     await close_mongo_connection()
 
