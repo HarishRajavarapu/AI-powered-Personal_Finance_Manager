@@ -26,6 +26,28 @@ frontend/
   src/
     components/
     context/
+    ## Screenshots
+
+    Add screenshots of the app to help users and contributors see the UI.
+
+    Place image files in the `docs/images/` folder and reference them with relative paths so GitHub can display them. Example markdown:
+
+    ![Landing page](docs/images/landing.png)
+    ![Dashboard](docs/images/dashboard.png)
+
+    Recommendations:
+
+    - Use PNG or JPG, optimized for web (1280×720 or 1024×600 works well).
+    - Keep file names short and lowercase (e.g., `landing.png`, `dashboard.png`).
+
+    How to add and push screenshots:
+
+    ```bash
+    mkdir -p docs/images
+    git add docs/images/landing.png README.md
+    git commit -m "docs: add screenshots to README"
+    git push
+    ```
     hooks/
     layouts/
     pages/
