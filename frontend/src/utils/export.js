@@ -1,6 +1,3 @@
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-
 import { currencyFormatter } from "@/utils/constants";
 
 export function exportTransactionsCsv(transactions) {
@@ -26,7 +23,11 @@ export function exportTransactionsCsv(transactions) {
   URL.revokeObjectURL(url);
 }
 
-export function exportTransactionsPdf(transactions) {
+export async function exportTransactionsPdf(transactions) {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable"),
+  ]);
   const doc = new jsPDF();
   doc.setFontSize(16);
   doc.text("Financial Transaction Report", 14, 18);
@@ -47,4 +48,3 @@ export function exportTransactionsPdf(transactions) {
 
   doc.save("financial-report.pdf");
 }
-

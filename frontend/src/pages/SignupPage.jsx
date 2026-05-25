@@ -37,7 +37,7 @@ export default function SignupPage() {
     try {
       await signup(values);
       toast.success("Account created.");
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       toast.error(error.message || "Signup failed.");
     }
@@ -97,4 +97,3 @@ export default function SignupPage() {
     </main>
   );
 }
-

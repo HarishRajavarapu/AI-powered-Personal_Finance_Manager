@@ -20,7 +20,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/dashboard";
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -92,4 +92,3 @@ export default function LoginPage() {
     </main>
   );
 }
-

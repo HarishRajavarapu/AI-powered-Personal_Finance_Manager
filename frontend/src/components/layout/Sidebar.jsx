@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/utils/cn";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: Gauge },
+  { name: "Dashboard", href: "/dashboard", icon: Gauge },
   { name: "Transactions", href: "/transactions", icon: ReceiptText },
   { name: "Budgets", href: "/budgets", icon: PiggyBank },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
@@ -67,4 +67,3 @@ export default function Sidebar() {
     </aside>
   );
 }
-

@@ -147,9 +147,11 @@ Use a free Render Web Service.
 - Root directory: `backend`
 - Build command: `pip install -r requirements.txt`
 - Start command: `uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}`
+- Python version: `3.12.4`
 
 Set these Render environment variables. Do not wrap values in quotes in the Render dashboard.
 
+- `PYTHON_VERSION=3.12.4`
 - `ENVIRONMENT=production`
 - `DEBUG=false`
 - `MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority`

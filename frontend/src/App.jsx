@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
 
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
@@ -12,6 +12,7 @@ const AnalyticsPage = lazy(() => import("@/pages/AnalyticsPage"));
 const BudgetsPage = lazy(() => import("@/pages/BudgetsPage"));
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const InsightsPage = lazy(() => import("@/pages/InsightsPage"));
+const LandingPage = lazy(() => import("@/pages/LandingPage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
@@ -50,14 +51,14 @@ export default function App() {
         <AuthProvider>
           <Suspense fallback={<PageFallback />}>
             <Routes>
+              <Route index element={<LandingPage />} />
               <Route element={<PublicOnlyRoute />}>
                 <Route path="login" element={<LoginPage />} />
                 <Route path="signup" element={<SignupPage />} />
               </Route>
               <Route element={<ProtectedRoute />}>
                 <Route element={<AppLayout />}>
-                  <Route index element={<DashboardPage />} />
-                  <Route path="dashboard" element={<Navigate to="/" replace />} />
+                  <Route path="dashboard" element={<DashboardPage />} />
                   <Route path="transactions" element={<TransactionsPage />} />
                   <Route path="budgets" element={<BudgetsPage />} />
                   <Route path="analytics" element={<AnalyticsPage />} />

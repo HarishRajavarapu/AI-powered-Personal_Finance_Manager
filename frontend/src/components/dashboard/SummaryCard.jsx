@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/utils/cn";
 
@@ -12,11 +10,7 @@ export default function SummaryCard({ title, value, helper, icon: Icon, tone = "
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div>
       <Card className="glass-card">
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-4">
@@ -31,7 +25,6 @@ export default function SummaryCard({ title, value, helper, icon: Icon, tone = "
           <p className="mt-4 text-sm text-muted-foreground">{helper}</p>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }
-
