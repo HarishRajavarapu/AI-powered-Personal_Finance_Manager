@@ -1,6 +1,6 @@
 # Backend Setup
 
-FastAPI backend for the AI-Powered Personal Finance Manager.
+FastAPI backend for F!NO, the Financial Operator.
 
 ## Local setup
 
@@ -27,4 +27,3 @@ Health endpoints:
 - `GET /`
 - `GET /api/v1/health`
 - `GET /api/v1/health/database`
-

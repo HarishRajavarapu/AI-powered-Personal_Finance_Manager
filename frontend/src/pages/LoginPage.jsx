@@ -59,7 +59,7 @@ export default function LoginPage() {
           <div>
             <CardTitle className="text-2xl">Sign in</CardTitle>
             <p className="mt-2 text-sm text-muted-foreground">
-              Access your personal finance dashboard.
+              Access your F!NO workspace.
             </p>
           </div>
         </CardHeader>

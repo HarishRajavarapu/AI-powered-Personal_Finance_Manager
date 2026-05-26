@@ -71,7 +71,7 @@ export default function DashboardPage() {
         <div>
           <Badge variant="secondary">Live overview</Badge>
           <h1 className="mt-3 text-2xl font-semibold tracking-normal sm:text-3xl">
-            Financial dashboard
+            F!NO dashboard
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Track cash flow, budgets, and savings with calm daily clarity.

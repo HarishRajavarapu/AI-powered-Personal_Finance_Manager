@@ -12,7 +12,7 @@ load_dotenv(BACKEND_DIR / ".env")
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "AI-Powered Personal Finance Manager"
+    PROJECT_NAME: str = "F!NO"
     API_V1_PREFIX: str = "/api/v1"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True

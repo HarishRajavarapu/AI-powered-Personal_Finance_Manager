@@ -1,6 +1,6 @@
-# AI-Powered Personal Finance Manager
+# F!NO
 
-Production-ready full-stack personal finance app with React, FastAPI, MongoDB Atlas, JWT authentication, budgeting, analytics, exports, and Gemini-powered insights.
+F!NO is a production-ready Financial Operator web app with React, FastAPI, MongoDB Atlas, JWT authentication, budgeting, analytics, exports, and Gemini-powered insights.
 
 ## Tech Stack
 

@@ -8,8 +8,8 @@ export default function Logo() {
         <WalletCards className="h-5 w-5" />
       </span>
       <span className="min-w-0">
-        <span className="block truncate text-sm font-semibold leading-5">AI Finance</span>
-        <span className="block truncate text-xs text-muted-foreground">Personal manager</span>
+        <span className="block truncate text-sm font-semibold leading-5">F!NO</span>
+        <span className="block truncate text-xs text-muted-foreground">Financial Operator</span>
       </span>
     </Link>
   );

@@ -19,7 +19,7 @@ export default function LandingPage() {
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
               <WalletCards className="h-5 w-5" />
             </span>
-            <span className="truncate text-sm font-semibold">AI Finance</span>
+            <span className="truncate text-sm font-semibold">F!NO</span>
           </Link>
           <nav className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
             <Button asChild size="sm" variant="ghost">
@@ -38,7 +38,7 @@ export default function LandingPage() {
       <section className="relative isolate flex min-h-[78svh] items-center overflow-hidden">
         <img
           src="/landing-dashboard.png"
-          alt="AI Finance dashboard showing balances, budget progress, and recent transactions"
+          alt="F!NO dashboard showing balances, budget progress, and recent transactions"
           className="absolute inset-0 h-full w-full object-cover object-left-top"
           fetchPriority="high"
         />
@@ -46,12 +46,12 @@ export default function LandingPage() {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
         <div className="relative mx-auto flex w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="w-full max-w-[calc(100vw-2rem)] text-white sm:max-w-2xl">
-            <p className="text-sm font-medium text-cyan-200">Personal finance, finally organized</p>
+            <p className="text-sm font-medium text-cyan-200">Financial operations, finally clear</p>
             <h1 className="mt-4 text-4xl font-semibold tracking-normal sm:text-5xl lg:text-6xl">
-              AI Finance
+              F!NO
             </h1>
             <p className="mt-5 max-w-full text-base leading-7 text-slate-100 sm:max-w-xl sm:text-lg">
-              A clean money workspace for expenses, budgets, savings, analytics, and AI-powered spending insights.
+              A modern Financial Operator for expenses, budgets, savings, analytics, and AI-powered spending insights.
             </p>
             <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
               <Button asChild size="lg" className="w-full sm:w-auto">
