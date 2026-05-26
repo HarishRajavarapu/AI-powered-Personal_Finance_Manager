@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.middleware.auth import get_current_user
@@ -20,7 +22,11 @@ async def signup(payload: SignupRequest) -> AuthResponse:
 @router.post("/login", response_model=AuthResponse)
 async def login(payload: LoginRequest) -> AuthResponse:
     user = await get_user_by_email(payload.email)
-    if user is None or not verify_password(payload.password, user["password_hash"]):
+    password_valid = False
+    if user is not None:
+        password_valid = await asyncio.to_thread(verify_password, payload.password, user["password_hash"])
+
+    if user is None or not password_valid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password.",
@@ -38,4 +44,3 @@ async def me(current_user: dict = Depends(get_current_user)) -> UserPublic:
 @router.post("/logout", response_model=APIResponse)
 async def logout() -> APIResponse:
     return APIResponse(message="Logged out successfully.")
-

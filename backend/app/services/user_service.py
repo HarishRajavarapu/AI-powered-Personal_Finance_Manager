@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import HTTPException, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
@@ -35,10 +37,11 @@ async def get_user_by_id(user_id: str) -> dict | None:
 async def create_user(payload: SignupRequest) -> dict:
     database = get_database()
     now = utc_now()
+    password_hash = await asyncio.to_thread(hash_password, payload.password)
     document = {
         "name": payload.name.strip(),
         "email": payload.email.lower(),
-        "password_hash": hash_password(payload.password),
+        "password_hash": password_hash,
         "created_at": now,
         "updated_at": now,
     }

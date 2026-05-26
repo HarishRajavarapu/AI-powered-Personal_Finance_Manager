@@ -8,8 +8,9 @@ from app.utils.datetime import utc_now
 
 
 def hash_password(password: str) -> str:
+    settings = get_settings()
     password_bytes = password.encode("utf-8")
-    return bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode("utf-8")
+    return bcrypt.hashpw(password_bytes, bcrypt.gensalt(rounds=settings.BCRYPT_ROUNDS)).decode("utf-8")
 
 
 def verify_password(password: str, password_hash: str) -> bool:
@@ -36,4 +37,3 @@ def decode_access_token(token: str) -> str | None:
 
     subject = payload.get("sub")
     return subject if isinstance(subject, str) else None
-

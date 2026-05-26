@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, WalletCards } from "lucide-react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -10,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/auth-context";
+import { warmApi } from "@/services/api";
 
 const loginSchema = z.object({
   email: z.string().email("Enter a valid email address."),
@@ -32,6 +34,10 @@ export default function LoginPage() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    warmApi();
+  }, []);
 
   async function onSubmit(values) {
     try {

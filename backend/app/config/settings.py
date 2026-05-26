@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = Field(default="replace-with-a-long-random-secret", min_length=16)
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
+    BCRYPT_ROUNDS: int = 10
 
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.0-flash"
